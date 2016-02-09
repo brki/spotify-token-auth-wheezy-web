@@ -100,7 +100,7 @@ class SwapHandler(BaseHandler):
 
 all_urls = [
     url(config.APP_REFRESH_PATH, RefreshHandler, name='refresh'),
-    url(config.APP_REFRESH_PATH, SwapHandler, name='swap'),
+    url(config.APP_SWAP_PATH, SwapHandler, name='swap'),
 ]
 
 
