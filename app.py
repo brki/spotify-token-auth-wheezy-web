@@ -99,8 +99,8 @@ class SwapHandler(BaseHandler):
 
 
 all_urls = [
-    url('refresh', RefreshHandler, name='refresh'),
-    url('swap', SwapHandler, name='swap'),
+    url(config.APP_REFRESH_PATH, RefreshHandler, name='refresh'),
+    url(config.APP_REFRESH_PATH, SwapHandler, name='swap'),
 ]
 
 
