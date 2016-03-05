@@ -38,7 +38,7 @@ class RefreshHandler(BaseHandler):
 
         try:
             form = self.request.form
-            encrypted_token = form['token']
+            encrypted_token = form['refresh_token'][0]
             token = crypt.decrypt(encrypted_token)
         except:
             return bad_request_with_detail('No data posted, or data in incorrect format')
@@ -56,7 +56,7 @@ class RefreshHandler(BaseHandler):
         response = HTTPResponse()
         response.content_type = 'application/json'
         response.status_code = token_response.status_code
-        response.write(token_response.content)
+        response.write_bytes(token_response.content)
         return response
 
 
@@ -82,19 +82,20 @@ class SwapHandler(BaseHandler):
                                        headers=auth_header,
                                        verify=True)
 
+        response = HTTPResponse()
+        response.content_type = 'application/json'
+        response.status_code = token_response.status_code
+
         if token_response.status_code == 200:
             json_response = token_response.json()
             refresh_token = json_response["refresh_token"]
             encrypted_token = crypt.encrypt(refresh_token)
             json_response["refresh_token"] = encrypted_token
             response_body = json.dumps(json_response)
+            response.write(response_body)
         else:
-            response_body = token_response.content
+            response.write_bytes(token_response.content)
 
-        response = HTTPResponse()
-        response.content_type = 'application/json'
-        response.status_code = token_response.status_code
-        response.write(response_body)
         return response
 
 
